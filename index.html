@@ -1,645 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Very Important Message...</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Message</title>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 20px;
-        }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        .container {
-            max-width: 500px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
-            padding: 30px 25px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f5f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.1), 
-                transparent);
-            animation: shimmer 3s infinite;
-        }
+.container {
+  max-width: 600px;
+  width: 90%;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+}
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
+h1 {
+  font-size: 2.2em;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
 
-        .content {
-            position: relative;
-            z-index: 1;
-        }
+.ragebait-text {
+  color: #6e6e73;
+  margin: 20px 0;
+}
 
-        h1 {
-            font-size: 1.8em;
-            color: #2d3748;
-            margin-bottom: 25px;
-            text-align: center;
-            animation: fadeInDown 0.8s ease;
-        }
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
 
-        .name-input-container {
-            margin-bottom: 25px;
-            animation: fadeIn 1s ease 0.3s both;
-        }
+button {
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  background: #0071e3;
+  color: white;
+  cursor: pointer;
+}
 
-        .name-input {
-            width: 100%;
-            padding: 16px 18px;
-            font-size: 1.1em;
-            border: 3px solid #667eea;
-            border-radius: 15px;
-            outline: none;
-            transition: all 0.3s ease;
-            -webkit-appearance: none;
-        }
+button:hover {
+  background: #005bb5;
+}
 
-        .name-input:focus {
-            border-color: #764ba2;
-            box-shadow: 0 0 20px rgba(118, 75, 162, 0.3);
-            transform: scale(1.02);
-        }
+.progress-bar {
+  height: 4px;
+  background: #e5e5ea;
+  margin: 20px 0;
+}
 
-        .ragebait-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #0071e3;
+  transition: 0.3s;
+}
 
-        .ragebait-text {
-            font-size: 1.2em;
-            color: #2d3748;
-            margin: 20px 0;
-            line-height: 1.6;
-            animation: slideInLeft 0.6s ease;
-            text-align: center;
-        }
+/* KEEP CHAOS */
+.shake { animation: shake 0.4s; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
 
-        .button-container {
-            display: flex;
-            gap: 12px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+.dodge {
+  position: absolute;
+}
 
-        .rage-button {
-            padding: 16px 32px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            touch-action: manipulation;
-            -webkit-user-select: none;
-            user-select: none;
-        }
+.particle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: black;
+  animation: float 2s forwards;
+}
 
-        .rage-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
+@keyframes float {
+  to {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
 
-        .rage-button:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .rage-button:active {
-            transform: scale(0.95);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: #2d3748;
-        }
-
-        .annoying-box {
-            position: fixed;
-            padding: 18px 24px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 1.1em;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: float 2s ease-in-out infinite;
-            z-index: 1000;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .click-counter {
-            font-size: 2.5em;
-            color: #667eea;
-            text-align: center;
-            margin: 20px 0;
-            font-weight: bold;
-            animation: pulse 1s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .wholesome-section {
-            display: none;
-            animation: fadeIn 1s ease;
-            text-align: center;
-        }
-
-        .wholesome-section h2 {
-            font-size: 2em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 25px;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        .wholesome-text {
-            font-size: 1.1em;
-            color: #2d3748;
-            line-height: 1.8;
-            margin: 18px 0;
-            animation: fadeIn 1s ease 0.3s both;
-        }
-
-        .heart-container {
-            font-size: 3.5em;
-            margin: 25px 0;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.2); }
-            50% { transform: scale(1); }
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        .particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: particleFloat 3s ease-out;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-200px) scale(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .shake {
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
-        }
-
-        .vibrate-on-tap {
-            animation: tapVibrate 0.3s;
-        }
-
-        @keyframes tapVibrate {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-        }
-
-        .dodge-button {
-            position: fixed !important;
-            z-index: 1001;
-            transition: all 0.2s ease-out;
-        }
-
-        /* Mobile-specific optimizations */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5em;
-            }
-            
-            .ragebait-text {
-                font-size: 1.1em;
-            }
-            
-            .rage-button {
-                padding: 14px 28px;
-                font-size: 1em;
-            }
-            
-            .click-counter {
-                font-size: 2em;
-            }
-            
-            .wholesome-section h2 {
-                font-size: 1.6em;
-            }
-            
-            .wholesome-text {
-                font-size: 1em;
-            }
-        }
-    </style>
+</style>
 </head>
+
 <body>
-    <div class="particles" id="particles"></div>
-    
-    <div class="container">
-        <div class="content">
-            <!-- Name Input Section -->
-            <div id="nameSection">
-                <h1>✨ Enter Your Name ✨</h1>
-                <div class="name-input-container">
-                    <input type="text" class="name-input" id="nameInput" placeholder="Type your name here...">
-                </div>
-                <div class="button-container">
-                    <button class="rage-button btn-primary" onclick="startRagebait()">Continue</button>
-                </div>
-            </div>
 
-            <!-- Ragebait Section -->
-            <div class="ragebait-section" id="ragebaitSection">
-                <h1>Hey <span id="userName"></span>! 👋</h1>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar"></div>
-                </div>
-                
-                <div id="ragebaitContent">
-                    <p class="ragebait-text">So... I needed to tell you something VERY important...</p>
-                    <div class="button-container">
-                        <button class="rage-button btn-primary" onclick="nextRagebait(1)">What is it?</button>
-                    </div>
-                </div>
-            </div>
+<div class="container" id="app">
+  <h1>Enter your name</h1>
+  <input id="nameInput" placeholder="Your name">
+  <button onclick="start()">Continue</button>
+</div>
 
-            <!-- Wholesome Section -->
-            <div class="wholesome-section" id="wholesomeSection">
-                <div class="heart-container">❤️</div>
-                <h2>Just Kidding!</h2>
-                <p class="wholesome-text">
-                    Hey <span id="userName2"></span>, I know I just put you through absolute chaos...
-                </p>
-                <p class="wholesome-text">
-                    But real talk - you're genuinely one of the best people in my life.
-                </p>
-                <p class="wholesome-text">
-                    Thanks for always being there, for laughing at my stupid jokes, 
-                    and for being the amazing person you are. 
-                </p>
-                <p class="wholesome-text">
-                    You deserve all the good things coming your way! 💜
-                </p>
-                <div class="heart-container">✨</div>
-            </div>
-        </div>
-    </div>
+<script>
+let step = 0;
+let name = "";
 
-    <script>
-        let userName = '';
-        let ragebaitStep = 0;
-        let clickCount = 0;
-        let annoyingBoxes = [];
-        let dodgeButton = null;
-        let dodgeTouches = 0;
+function vibrate() {
+  if (navigator.vibrate) navigator.vibrate(50);
+}
 
-        // Vibration support for mobile
-        function vibrate(pattern) {
-            if (navigator.vibrate) {
-                navigator.vibrate(pattern);
-            }
-        }
+function particles(n=5) {
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.top=Math.random()*100+'%';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),2000);
+  }
+}
 
-        function startRagebait() {
-            userName = document.getElementById('nameInput').value.trim();
-            if (!userName) {
-                vibrate(200);
-                alert('Come on, at least tell me your name! 😤');
-                return;
-            }
+function start() {
+  name = document.getElementById('nameInput').value;
+  if(!name){ alert('enter name'); return; }
+  next();
+}
 
-            vibrate(50);
-            document.getElementById('nameSection').style.display = 'none';
-            document.getElementById('ragebaitSection').style.display = 'block';
-            document.getElementById('userName').textContent = userName;
-            updateProgress(10);
-        }
+function next() {
+  step++;
+  vibrate();
+  particles();
 
-        function updateProgress(percent) {
-            document.getElementById('progressBar').style.width = percent + '%';
-        }
+  const app = document.getElementById('app');
 
-        function nextRagebait(step) {
-            ragebaitStep = step;
-            const content = document.getElementById('ragebaitContent');
-            vibrate(30);
-            
-            const ragebaitSteps = {
-                1: {
-                    text: `Actually ${userName}... you know what? Never mind. 😏`,
-                    buttons: [{text: 'TELL ME NOW', action: 2, class: 'btn-danger'}]
-                },
-                2: {
-                    text: `Fine fine... but first, tap this button exactly 10 times! 😈`,
-                    buttons: [{text: 'Tap Me!', action: 'counter', class: 'btn-warning'}]
-                },
-                3: {
-                    text: `Okay okay... but can you catch me first? 🏃‍♀️`,
-                    buttons: [{text: 'Try to Tap!', action: 'dodge', class: 'btn-danger', id: 'dodgeBtn'}]
-                },
-                4: {
-                    text: `Alright ${userName}, you're pretty persistent! One more thing...`,
-                    buttons: [{text: 'WHAT NOW?!', action: 5, class: 'btn-primary'}]
-                },
-                5: {
-                    text: `How about... NO! 😂`,
-                    buttons: [{text: 'I SWEAR...', action: 6, class: 'btn-danger'}]
-                },
-                6: {
-                    text: `Just kidding! Ready for the real message?`,
-                    buttons: [{text: 'FINALLY!', action: 'wholesome', class: 'btn-primary'}]
-                }
-            };
+  if(step===1){
+    app.innerHTML = `
+      <h1>Hey ${name}</h1>
+      <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+      <p class="ragebait-text">I need to tell you something...</p>
+      <button onclick="next()">What?</button>
+    `;
+  }
 
-            const currentStep = ragebaitSteps[step];
-            if (!currentStep) return;
+  else if(step===2){
+    app.innerHTML = `
+      <p class="ragebait-text">Actually never mind 😏</p>
+      <button onclick="next()">TELL ME</button>
+    `;
+  }
 
-            content.innerHTML = `
-                <p class="ragebait-text">${currentStep.text}</p>
-                <div class="button-container" id="buttonContainer">
-                    ${currentStep.buttons.map(btn => 
-                        `<button class="rage-button ${btn.class}" ${btn.id ? `id="${btn.id}"` : ''} onclick="handleAction('${btn.action}')">${btn.text}</button>`
-                    ).join('')}
-                </div>
-                ${step === 2 ? '<div class="click-counter" id="clickCounter">0 / 10</div>' : ''}
-            `;
+  else if(step===3){
+    app.innerHTML = `
+      <p>Click 5 times</p>
+      <button onclick="clicker()" id="clickBtn">Tap</button>
+      <p id="count">0</p>
+    `;
+  }
 
-            updateProgress(step * 15);
-            createParticles(5);
+  else if(step===4){
+    app.innerHTML = `
+      <p>Catch the button 😈</p>
+      <button id="dodge">Try</button>
+    `;
 
-            // Setup dodge button if needed
-            if (step === 3) {
-                setTimeout(() => setupDodgeButton(), 100);
-            }
-        }
+    const btn=document.getElementById('dodge');
+    btn.classList.add('dodge');
 
-        function setupDodgeButton() {
-            dodgeButton = document.getElementById('dodgeBtn');
-            if (!dodgeButton) return;
+    let attempts = 0;
 
-            // Touch start handler
-            dodgeButton.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                dodgeTouches++;
-                vibrate(50);
-                
-                if (dodgeTouches >= 5) {
-                    // After 5 attempts, let them win
-                    createParticles(20);
-                    vibrate([100, 50, 100]);
-                    setTimeout(() => nextRagebait(4), 500);
-                    return;
-                }
+    function moveButton() {
+      const maxX = window.innerWidth - 100;
+      const maxY = window.innerHeight - 100;
+      btn.style.left = Math.random() * maxX + 'px';
+      btn.style.top = Math.random() * maxY + 'px';
+    }
 
-                // Move button away from touch
-                const touch = e.touches[0];
-                const btnRect = dodgeButton.getBoundingClientRect();
-                const btnCenterX = btnRect.left + btnRect.width / 2;
-                const btnCenterY = btnRect.top + btnRect.height / 2;
-                
-                // Calculate direction away from touch
-                const deltaX = btnCenterX - touch.clientX;
-                const deltaY = btnCenterY - touch.clientY;
-                
-                // Normalize and create new position
-                const maxX = window.innerWidth - btnRect.width - 20;
-                const maxY = window.innerHeight - btnRect.height - 100;
-                
-                let newX, newY;
-                
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    // Move horizontally
-                    newX = deltaX > 0 ? Math.min(maxX, btnRect.left + 150) : Math.max(20, btnRect.left - 150);
-                    newY = Math.random() * maxY + 50;
-                } else {
-                    // Move vertically
-                    newX = Math.random() * maxX + 20;
-                    newY = deltaY > 0 ? Math.min(maxY, btnRect.top + 150) : Math.max(50, btnRect.top - 150);
-                }
-                
-                dodgeButton.classList.add('dodge-button');
-                dodgeButton.style.left = newX + 'px';
-                dodgeButton.style.top = newY + 'px';
-                
-                createAnnoyingBox();
-            }, { passive: false });
-        }
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      attempts++;
+      vibrate();
+      particles(3);
 
-        function handleAction(action) {
-            vibrate(30);
-            
-            if (action === 'counter') {
-                clickCount++;
-                document.getElementById('clickCounter').textContent = `${clickCount} / 10`;
-                
-                if (clickCount >= 10) {
-                    vibrate([50, 50, 50]);
-                    setTimeout(() => nextRagebait(3), 500);
-                } else {
-                    createParticles(3);
-                }
-            } else if (action === 'wholesome') {
-                showWholesome();
-            } else {
-                nextRagebait(parseInt(action));
-            }
-        }
+      if (attempts >= 11) {
+        next();
+      } else {
+        moveButton();
+      }
+    });
 
-        function createAnnoyingBox() {
-            const messages = [
-                'HAHA MISSED! 😝',
-                'TOO SLOW! 🏃‍♀️',
-                'NICE TRY! 😂',
-                'ALMOST! 😈',
-                'NOPE! 🙅‍♀️'
-            ];
-            
-            const box = document.createElement('div');
-            box.className = 'annoying-box';
-            box.textContent = messages[Math.floor(Math.random() * messages.length)];
-            box.style.top = Math.random() * 60 + 10 + '%';
-            box.style.left = Math.random() * 60 + 10 + '%';
-            
-            box.onclick = () => {
-                vibrate(30);
-                box.remove();
-                createParticles(10);
-            };
-            
-            document.body.appendChild(box);
-            annoyingBoxes.push(box);
-            
-            setTimeout(() => {
-                if (box.parentNode) box.remove();
-            }, 2000);
-        }
+    // fallback for desktop
+    btn.onmouseover = () => {
+      moveButton();
+    };
 
-        function showWholesome() {
-            vibrate([100, 50, 100, 50, 200]);
-            document.getElementById('ragebaitSection').style.display = 'none';
-            document.getElementById('wholesomeSection').style.display = 'block';
-            document.getElementById('userName2').textContent = userName;
-            createParticles(30);
-            
-            // Clean up annoying boxes
-            annoyingBoxes.forEach(box => box.remove());
-        }
+    btn.onclick = () => {
+      attempts++;
+      if (attempts >= 11) next();
+    };
+  }
 
-        function createParticles(count) {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.top = Math.random() * 100 + '%';
-                    particle.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
-                    container.appendChild(particle);
-                    
-                    setTimeout(() => particle.remove(), 3000);
-                }, i * 100);
-            }
-        }
+  else {
+    app.innerHTML = `
+      <h1>Just kidding 😂</h1>
+      <p class="ragebait-text">You're awesome ${name}</p>
+    `;
+  }
+}
 
-        // Prevent zoom on double tap
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-    </script>
+let c=0;
+function clicker(){
+  c++;
+  document.getElementById('count').innerText=c;
+  particles();
+  if(c>=5) next();
+}
+
+</script>
+
 </body>
 </html>
