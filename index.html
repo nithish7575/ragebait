@@ -116,6 +116,20 @@ button:hover {
 </div>
 
 <script>
+// SOUND EFFECTS
+let axeAudio = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3');
+
+function playSound(type) {
+  if (type === 'stopAll') {
+    axeAudio.pause();
+    axeAudio.currentTime = 0;
+  }
+  if (type === 'axe') {
+    axeAudio.currentTime = 0;
+    axeAudio.play();
+  }
+}
+
 let step = 0;
 let name = "";
 
@@ -196,7 +210,7 @@ function next() {
       particles(3);
 
       if (attempts >= 11) {
-        next();
+        showChoice();
       } else {
         moveButton();
       }
@@ -217,6 +231,94 @@ function next() {
     app.innerHTML = `
       <h1>Just kidding 😂</h1>
       <p class="ragebait-text">You're awesome ${name}</p>
+    `;
+  }
+}
+
+function showChoice(){
+  const app=document.getElementById('app');
+  app.innerHTML=`
+    <video width="120" autoplay loop muted>
+      <source src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.mp4">
+    </video>
+    <p class="ragebait-text">Are you ready for a surprise?</p>
+    <button onclick="answerReady(true)">Yes 😊</button>
+    <button id="noBtn">No 😐</button>
+  `;
+
+  const noBtn = document.getElementById('noBtn');
+
+  function moveNo(){
+    const maxX = window.innerWidth - 120;
+    const maxY = window.innerHeight - 120;
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = Math.random()*maxX + 'px';
+    noBtn.style.top = Math.random()*maxY + 'px';
+  }
+
+  let interval = setInterval(moveNo, 1200);
+
+  noBtn.addEventListener('touchstart', (e)=>{
+    e.preventDefault();
+    moveNo();
+  });
+
+  noBtn.onclick = ()=> answerReady(false);
+}
+
+function answerReady(ans) {
+  playSound('stopAll');
+  const app = document.getElementById('app');
+
+  if (!ans) {
+    playSound('axe');
+    app.innerHTML = `
+      <video width="120" autoplay loop muted>
+        <source src="https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.mp4" type="video/mp4">
+      </video>
+      <p class="ragebait-text">Try again.</p>
+      <button onclick="showChoice()">Okay okay 😭</button>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <h1>Choose one 💜</h1>
+    <button onclick="finalMsg(1)">Option 1</button>
+    <button onclick="finalMsg(2)">Option 2</button>
+    <button onclick="finalMsg(3)">Option 3</button>
+  `;
+}
+
+function finalMsg(n) {
+  const app = document.getElementById('app');
+
+  const messages = [
+    `You're honestly one of the best people in my life. Thanks for always being there for me 💜`,
+    `I don't say it enough, but I really appreciate you. You're an amazing friend and I'm lucky to have you 🫶`,
+    `No matter what happens, I'm glad I have you as my best friend. You mean a lot to me 💖`
+  ];
+
+  app.innerHTML = `
+    <video width="140" autoplay loop muted>
+      <source src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.mp4" type="video/mp4">
+    </video>
+    <p class="ragebait-text">${messages[n-1]}</p>
+  `;
+}
+
+function choice(opt) {
+  const app = document.getElementById('app');
+
+  if (opt === 'a') {
+    app.innerHTML = `
+      <h1>Wrong choice 😂</h1>
+      <button onclick="next()">Continue</button>
+    `;
+  } else {
+    app.innerHTML = `
+      <h1>Good choice 👀</h1>
+      <button onclick="next()">Continue</button>
     `;
   }
 }
